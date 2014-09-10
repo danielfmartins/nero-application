@@ -11,8 +11,10 @@ public abstract class ResourceList<R extends Resource, T> extends Resource {
 
 	protected ResourceList(List<T> values) {
 		super();
-		this.resourceList = new ArrayList<R>(values.size());
-		this.addAll(values);
+		if (values != null) {
+			this.resourceList = new ArrayList<R>(values.size());
+			this.addAll(values);
+		}
 	}
 
 	private void addAll(List<T> values) {

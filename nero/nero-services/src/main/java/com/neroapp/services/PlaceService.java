@@ -1,5 +1,7 @@
 package com.neroapp.services;
 
+import java.util.Map;
+
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -23,7 +25,7 @@ import com.neroapp.services.resource.QualificationResource;
 import com.neroapp.services.resource.QualificationsResource;
 
 @Path(PlaceResource.URI)
-public class PlaceService {
+public class PlaceService extends AbstractService {
 	
 	@Context
 	private UriInfo uriInfo;
@@ -37,8 +39,8 @@ public class PlaceService {
 			@MatrixParam("name") String name,
 			@QueryParam("maxResults") Integer maxResultSize) {
 		try {
-			return new PlacesResource(this.uriInfo, this.facade.getQualifiables(reference,
-					name, maxResultSize));
+			Map<String, Object> parameters = this.extractParameters(this.uriInfo);
+			return new PlacesResource(this.facade.getQualifiables(reference, name, maxResultSize), parameters);
 		} catch (NeroException e) {
 			throw new RuntimeException(e);
 		}
@@ -62,7 +64,7 @@ public class PlaceService {
 		try {
 			//TODO lançar NOT FOUND CASO PLACE NAO SEJA ENCONTRADO
 			Place place = (Place) this.facade.getQualifiableById(null, id);
-			return new QualificationsResource(this.uriInfo, this.facade.getAllQualifications(place));
+			return new QualificationsResource(this.facade.getAllQualifications(place), this.extractParameters(this.uriInfo));
 		} catch (NeroException e) {
 			throw new RuntimeException(e);
 		}
