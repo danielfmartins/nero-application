@@ -1,6 +1,6 @@
 package com.neroapp.services.resource;
 
-import java.net.URI;
+import java.util.Map;
 
 import javax.ws.rs.core.UriBuilder;
 
@@ -16,8 +16,6 @@ public class UserResource extends Resource {
 	public UserResource(User user) {
 		super();
 		this.user = user;
-		URI uri = UriBuilder.fromUri(TEMPLATE_URI).resolveTemplate("username", user.getUsername()).build();
-		this.add(new Link(uri.toString()));
 	}
 
 	public String getUsername() {
@@ -27,4 +25,14 @@ public class UserResource extends Resource {
 	public String getUserPreferredCountry() {
 		return user.getUserPreferredCountry();
 	}
+	
+	public static String resolveTemplate(Map<?, ?> parameters) {
+		String template = TEMPLATE_URI;
+		if (parameters != null) {
+			if (parameters.containsKey("username")) {
+				template = template.replace("{username}", String.valueOf(parameters.get("username")));
+			}
+		}
+		return UriBuilder.fromUri(template).toTemplate();
+	}	
 }

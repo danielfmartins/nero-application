@@ -1,7 +1,8 @@
 package com.neroapp.services.resource;
 
 import java.io.Serializable;
-import java.net.URI;
+import java.util.Collections;
+import java.util.Map;
 
 import javax.ws.rs.core.UriBuilder;
 
@@ -17,22 +18,21 @@ public class PlaceResource extends Resource {
 	public PlaceResource(Place place) {
 		super();
 		this.place = place;
-		
-		URI uri = UriBuilder.fromUri(TEMPLATE_URI)
-				.resolveTemplate("id", place.getId()).build();
-		
-		this.add(new Link(uri.toString()));
-		
+
+		String uri = resolveTemplate(Collections.singletonMap("id", place.getId()));
+
+		this.add(new Link(uri));
+
 		this.add(new Link("qualify", UriBuilder.fromUri(uri).segment("qualify")
-				.build().toString(), Method.POST));		
-		
-		this.add(new Link("qualifications", UriBuilder.fromUri(uri)
-				.segment("qualifications").build().toString(), Method.GET));
-		
-		//TODO montar esse link usando URI Template 
-		this.add(new Link("recommended hashtags", UriBuilder
-				.fromUri(uri)
-				.segment("recommendedhashtags").build().toString() + ";reference={reference}{;name}{?maxResults}", Method.GET));
+				.toTemplate(), Method.POST));
+
+		this.add(new Link("qualifications",
+				QualificationsResource.resolveTemplate(Collections
+						.singletonMap("id", place.getId())), Method.GET));
+
+		this.add(new Link("recommended hashtags", HashtagsResource
+				.resolveTemplate(Collections.singletonMap("id",
+						place.getId())), Method.GET));
 	}
 
 	public Serializable getReference() {
@@ -53,5 +53,15 @@ public class PlaceResource extends Resource {
 
 	public Long getTotalThumbsDown() {
 		return place.getTotalThumbsDown();
+	}
+	
+	public static String resolveTemplate(Map<?, ?> parameters) {
+		String template = TEMPLATE_URI;
+		if (parameters != null) {
+			if (parameters.containsKey("id")) {
+				template = template.replace("{id}", String.valueOf(parameters.get("id")));
+			}
+		}
+		return UriBuilder.fromUri(template).toTemplate();
 	}
 }
