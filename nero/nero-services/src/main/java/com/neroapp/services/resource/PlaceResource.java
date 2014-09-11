@@ -29,6 +29,10 @@ public class PlaceResource extends Resource {
 		this.add(new Link("qualifications", UriBuilder.fromUri(uri)
 				.segment("qualifications").build().toString(), Method.GET));
 		
+		//TODO montar esse link usando URI Template 
+		this.add(new Link("recommended hashtags", UriBuilder
+				.fromUri(uri)
+				.segment("recommendedhashtags").build().toString() + ";reference={reference}{;name}{?maxResults}", Method.GET));
 	}
 
 	public Serializable getReference() {
