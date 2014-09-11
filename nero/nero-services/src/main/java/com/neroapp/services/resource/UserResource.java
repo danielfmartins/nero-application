@@ -9,6 +9,7 @@ import com.neroapp.entities.User;
 public class UserResource extends Resource {
 
 	public static final String URI = "/users";
+	public static final String AUTHENTICATION_URI = "/users/authentication";	
 	public static final String TEMPLATE_URI = "/users/{username}";	
 	
 	private User user;

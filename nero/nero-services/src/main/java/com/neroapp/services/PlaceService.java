@@ -53,6 +53,8 @@ public class PlaceService extends AbstractService {
 			@QueryParam("maxResults") Integer maxResultSize) {
 		try {
 			Map<String, Object> parameters = this.extractParameters(this.uriInfo);
+			//resource.uriBuilder.build(parameters)
+			//resource.resolveTemplate(parameters).toTemplate();
 			return new PlacesResource(this.facade.getQualifiables(reference, name, maxResultSize), parameters);
 		} catch (NeroException e) {
 			throw new RuntimeException(e);

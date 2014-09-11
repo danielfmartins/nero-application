@@ -4,7 +4,6 @@ import javax.inject.Inject;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -37,9 +36,9 @@ public class UserService extends AbstractService {
 	}
 
 	@POST
-	@Path("{username}")
+	@Path("authentication")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response login(@PathParam("username") String username,
+	public Response login(@FormParam("username") String username,
 			@FormParam("password") String password) {
 		try {
 			User user = this.facade.findUserByName(username);

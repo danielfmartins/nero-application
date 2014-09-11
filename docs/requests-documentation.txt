@@ -1,0 +1,225 @@
+nero-application
+Domain/BASE URL: http://localhost:8080/nero-services
+
+----------------------------------------------------------------------------
+Request
+- Template : /
+- method : GET
+- Example : http://localhost:8080/nero-services
+
+Response :
+{
+    "links": [
+        {
+            "rel": "self",
+            "href": "/",
+            "method": "GET"
+        },
+        {
+            "rel": "create user",
+            "href": "/users",
+            "method": "POST"
+        },
+        {
+            "rel": "authentication",
+            "href": "/users/authentication",
+            "method": "POST"
+        },
+        {
+            "rel": "places",
+            "href": "/places;reference={reference}{;name}{?maxResults}",
+            "method": "GET"
+        }
+    ]
+}
+----------------------------------------------------------------------------
+Request
+- Template : /places;reference={reference}{;name}{?maxResults}
+- method : GET
+- Example  : http://localhost:8080/nero-services/places;reference=-18.9564938,-48.2524069?maxResults=1
+
+Response :
+{
+    "links": [
+        {
+            "rel": "self",
+            "href": "/places;reference=-18.9564938,-48.2524069?maxResults=1",
+            "method": "GET"
+        }
+    ],
+    "places": [
+        {
+            "links": [
+                {
+                    "rel": "self",
+                    "href": "/places/4fc3faa9e4b0e12f8ef5303f",
+                    "method": "GET"
+                },
+                {
+                    "rel": "qualify",
+                    "href": "/places/4fc3faa9e4b0e12f8ef5303f/qualify",
+                    "method": "POST"
+                },
+                {
+                    "rel": "qualifications",
+                    "href": "/places/4fc3faa9e4b0e12f8ef5303f/qualifications",
+                    "method": "GET"
+                },
+                {
+                    "rel": "recommended hashtags",
+                    "href": "/places/4fc3faa9e4b0e12f8ef5303f/recommendedhashtags;qualificationType={qualificationType}{?maxResults}",
+                    "method": "GET"
+                }
+            ],
+            "totalThumbsUp": 0,
+            "totalThumbsDown": 0,
+            "name": "Posto Jardim Veneza",
+            "id": "4fc3faa9e4b0e12f8ef5303f",
+            "reference": "-18.95644550102279,-48.2517967626669"
+        }
+    ]
+}
+----------------------------------------------------------------------------
+Request
+- Template : /places/{id}
+- method : GET
+- Example : http://localhost:8080/nero-services/places/4d49fa6d48a06dcbf4a175a2
+
+Response : 
+{
+    "links": [
+        {
+            "rel": "self",
+            "href": "/places/4d49fa6d48a06dcbf4a175a2",
+            "method": "GET"
+        },
+        {
+            "rel": "qualify",
+            "href": "/places/4d49fa6d48a06dcbf4a175a2/qualify",
+            "method": "POST"
+        },
+        {
+            "rel": "qualifications",
+            "href": "/places/4d49fa6d48a06dcbf4a175a2/qualifications",
+            "method": "GET"
+        },
+        {
+            "rel": "recommended hashtags",
+            "href": "/places/4d49fa6d48a06dcbf4a175a2/recommendedhashtags;qualificationType={qualificationType}{?maxResults}",
+            "method": "GET"
+        }
+    ],
+    "totalThumbsUp": 1,
+    "totalThumbsDown": 0,
+    "name": "Bairro Jardim Botânico",
+    "id": "4d49fa6d48a06dcbf4a175a2",
+    "reference": "-18.951034972643086,-48.24588183233722"
+}
+----------------------------------------------------------------------------
+Request
+- Template : /places/{id}/qualifications
+- method : GET
+- Example : http://localhost:8080/nero-services/places/4d49fa6d48a06dcbf4a175a2/qualifications
+
+Response :
+{
+    "links": [
+        {
+            "rel": "self",
+            "href": "/places/4d49fa6d48a06dcbf4a175a2/qualifications",
+            "method": "GET"
+        }
+    ],
+    "qualifications": [
+        {
+            "links": [],
+            "instant": "10/09/2014 00:04:28",
+            "positive": true,
+            "hashtags": [
+                "#valeapena",
+                "#maneiro",
+                "#cemporcento"
+            ],
+            "comment": "Muito bom",
+            "username": "user001"
+        }
+    ]
+}
+----------------------------------------------------------------------------
+Request
+- Template : /places/{id}/recommendedhashtags;qualificationType={qualificationType}{?maxResults}"
+- method : GET
+- Example : http://localhost:8080/nero-services/places/4d49fa6d48a06dcbf4a175a2/recommendedhashtags;qualificationType=POSITIVE?maxResults=1",
+
+Response :
+{
+    "links": [
+        {
+            "rel": "self",
+            "href": "/places/4d49fa6d48a06dcbf4a175a2/recommendedhashtags;qualificationType=POSITIVE?maxResults=1",
+            "method": "GET"
+        }
+    ],
+    "hashtags": [
+        {
+            "links": [],
+            "hashtag": "valeapena",
+            "definitionLocaleCountry": "BR",
+            "totalUse": 1
+        },
+        {
+            "links": [],
+            "hashtag": "cemporcento",
+            "definitionLocaleCountry": "BR",
+            "totalUse": 1
+        },
+        {
+            "links": [],
+            "hashtag": "maneiro",
+            "definitionLocaleCountry": "BR",
+            "totalUse": 1
+        }
+    ]
+}
+----------------------------------------------------------------------------
+Request
+- Template : /places/{id}/qualify 
+- method : POST
+- Example : http://localhost:8080/nero-services/places/4d49fa6d48a06dcbf4a175a2/qualify
+- Content-type: application/json
+- body : 
+{ 
+	"username" : "user001",
+	"instant" : "10/09/2014 00:04:28",
+	"comment" : "Muito bom",
+	"positive" : "true",
+	"hashtags" : ["#maneiro", "#cemporcento", "#valeapena"] 
+}
+
+Response : 204 No Content
+----------------------------------------------------------------------------
+Request
+- Template : /users
+- method : POST
+- Example : http://localhost:8080/nero-services/users
+- x-www-form-urlencoded
+- Parametros: username, password, language
+
+- Response:
+{
+    "links": [],
+    "userPreferredCountry": "pt",
+    "username": "user0003"
+}
+----------------------------------------------------------------------------
+Request
+- Template : /users/authentication
+- method : POST
+- Example : http://localhost:8080/nero-services/users/authentication
+- x-www-form-urlencoded
+- Parametros: username, password
+
+- Response:
+{
+    "authenticationToken": "user0003"
+}

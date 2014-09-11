@@ -31,7 +31,7 @@ public class PlacesResource extends ResourceList<PlaceResource, Place> {
 				template = template.replace("{name}", String.valueOf(parameters.get("name")));
 			}
 			if (parameters.containsKey("maxResults")) {
-				template = template.replace("{maxResults}", String.valueOf(parameters.get("maxResults")));
+				template = template.replace("{?maxResults}", String.format("?maxResults=%s", String.valueOf(parameters.get("maxResults"))) );
 			}
 		}
 		return UriBuilder.fromUri(template).toTemplate();
