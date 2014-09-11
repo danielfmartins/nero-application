@@ -16,11 +16,26 @@ import java.util.Set;
  */
 public class Qualification implements Serializable {
 
+	public static enum Type {
+		NEGATIVE(false), POSITIVE(true);
+
+		private boolean value;
+
+		private Type(boolean value) {
+			this.value = value;
+		}
+
+		public boolean getValue() {
+			return this.value;
+		}
+
+	}
+
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	private User user;
 	private Qualifiable qualifiable;
 	private Instant instant;
@@ -32,7 +47,8 @@ public class Qualification implements Serializable {
 		super();
 	}
 
-	public Qualification(User user, Qualifiable qualifiable, Boolean positiveQualification) {
+	public Qualification(User user, Qualifiable qualifiable,
+			Boolean positiveQualification) {
 		this();
 		this.user = user;
 		this.qualifiable = qualifiable;
@@ -65,7 +81,7 @@ public class Qualification implements Serializable {
 	public Instant getInstant() {
 		return instant;
 	}
-	
+
 	public void setInstant(Instant instant) {
 		this.instant = instant;
 	}
@@ -87,7 +103,7 @@ public class Qualification implements Serializable {
 	}
 
 	public String getQualificationType() {
-		return (isPositive() ? "POSITIVE" : "NEGATIVE");
+		return (isPositive() ? Type.POSITIVE.name() : Type.NEGATIVE.name());
 
 	}
 
@@ -110,7 +126,7 @@ public class Qualification implements Serializable {
 		}
 		return result.toString();
 	}
-	
+
 	public List<String> getHashtagsValues() {
 		List<String> hashtagList = new ArrayList<>();
 		String value = this.getHashTagsStringArray();
@@ -119,7 +135,7 @@ public class Qualification implements Serializable {
 		}
 		return hashtagList;
 	}
-	
+
 	public void setHashtagsValues(List<String> hashtagList) {
 		if (hashtagList != null) {
 			for (String value : hashtagList) {
@@ -134,7 +150,8 @@ public class Qualification implements Serializable {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((instant == null) ? 0 : instant.hashCode());
-		result = prime * result + ((qualifiable == null) ? 0 : qualifiable.hashCode());
+		result = prime * result
+				+ ((qualifiable == null) ? 0 : qualifiable.hashCode());
 		result = prime * result + ((user == null) ? 0 : user.hashCode());
 		return result;
 	}
@@ -168,8 +185,8 @@ public class Qualification implements Serializable {
 
 	@Override
 	public String toString() {
-		return "QualificationDetail [user=" + user + ", qualifiable=" + qualifiable
-				+ ", instant=" + instant + ", thumbsUp="
+		return "QualificationDetail [user=" + user + ", qualifiable="
+				+ qualifiable + ", instant=" + instant + ", thumbsUp="
 				+ positiveQualification + ", comment=" + comment + "]";
 	}
 

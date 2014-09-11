@@ -17,10 +17,18 @@ public class PlaceResource extends Resource {
 	public PlaceResource(Place place) {
 		super();
 		this.place = place;
-		URI uri = UriBuilder.fromUri(TEMPLATE_URI).resolveTemplate("id", place.getId()).build();
+		
+		URI uri = UriBuilder.fromUri(TEMPLATE_URI)
+				.resolveTemplate("id", place.getId()).build();
+		
 		this.add(new Link(uri.toString()));
-		this.add(new Link("qualifications", UriBuilder.fromUri(uri).segment("qualifications").build().toString(), Method.GET));
-		this.add(new Link("qualify", UriBuilder.fromUri(uri).segment("qualify").build().toString(), Method.POST));
+		
+		this.add(new Link("qualify", UriBuilder.fromUri(uri).segment("qualify")
+				.build().toString(), Method.POST));		
+		
+		this.add(new Link("qualifications", UriBuilder.fromUri(uri)
+				.segment("qualifications").build().toString(), Method.GET));
+		
 	}
 
 	public Serializable getReference() {

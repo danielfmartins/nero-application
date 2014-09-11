@@ -16,9 +16,11 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.UriInfo;
 
 import com.neroapp.common.NeroException;
+import com.neroapp.entities.Qualifiable;
 import com.neroapp.entities.Qualification;
 import com.neroapp.entities.places.Place;
 import com.neroapp.facade.NeroFacade;
+import com.neroapp.services.resource.HashtagsResource;
 import com.neroapp.services.resource.PlaceResource;
 import com.neroapp.services.resource.PlacesResource;
 import com.neroapp.services.resource.QualificationResource;
@@ -35,12 +37,10 @@ public class PlaceService extends AbstractService {
 	
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public PlacesResource getPlaces(@MatrixParam("reference") String reference,
-			@MatrixParam("name") String name,
-			@QueryParam("maxResults") Integer maxResultSize) {
+	@Path("{id}")
+	public PlaceResource get(@PathParam("id") String id) {
 		try {
-			Map<String, Object> parameters = this.extractParameters(this.uriInfo);
-			return new PlacesResource(this.facade.getQualifiables(reference, name, maxResultSize), parameters);
+			return new PlaceResource((Place) this.facade.getQualifiableById(null, id));
 		} catch (NeroException e) {
 			throw new RuntimeException(e);
 		}
@@ -48,10 +48,12 @@ public class PlaceService extends AbstractService {
 	
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	@Path("{id}")
-	public PlaceResource get(@PathParam("id") String id) {
+	public PlacesResource getPlaces(@MatrixParam("reference") String reference,
+			@MatrixParam("name") String name,
+			@QueryParam("maxResults") Integer maxResultSize) {
 		try {
-			return new PlaceResource((Place) this.facade.getQualifiableById(null, id));
+			Map<String, Object> parameters = this.extractParameters(this.uriInfo);
+			return new PlacesResource(this.facade.getQualifiables(reference, name, maxResultSize), parameters);
 		} catch (NeroException e) {
 			throw new RuntimeException(e);
 		}
@@ -68,6 +70,25 @@ public class PlaceService extends AbstractService {
 		} catch (NeroException e) {
 			throw new RuntimeException(e);
 		}
+	}
+	
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("{id}/recommendedhashtags")
+	public HashtagsResource getHashtags(@PathParam("id") String id,
+			@MatrixParam("qualificationType") String type,
+			@QueryParam("maxResults") Integer maxResultSize) {
+		try {
+			Qualifiable place = this.facade.getQualifiableById(null, id);
+			Map<String, Object> parameters = this
+					.extractParameters(this.uriInfo);
+			return new HashtagsResource(this.facade.getRecommendedHashtagsFor(
+					place, Qualification.Type.valueOf(type).getValue()),
+					parameters);
+		} catch (NeroException e) {
+			throw new RuntimeException(e);
+		}
+
 	}
 	
 	@POST
