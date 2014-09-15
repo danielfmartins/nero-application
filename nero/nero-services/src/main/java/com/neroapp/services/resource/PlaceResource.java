@@ -1,10 +1,9 @@
 package com.neroapp.services.resource;
 
 import java.io.Serializable;
-import java.util.Collections;
-import java.util.Map;
 
 import javax.ws.rs.core.UriBuilder;
+import javax.ws.rs.core.UriInfo;
 
 import com.neroapp.entities.places.Place;
 
@@ -18,25 +17,27 @@ public class PlaceResource extends Resource {
 	public PlaceResource(Place place) {
 		super();
 		this.place = place;
+	}
 
-		String uri = resolveTemplate(Collections.singletonMap("id", place.getId()));
+	/**
+	 * @see com.neroapp.services.resource.Resource#buildLinks(javax.ws.rs.core.UriInfo)
+	 */
+	@Override
+	public void buildLinks(UriInfo uriInfo) {
+		String uri = TEMPLATE_URI.replace("{id}",
+				String.valueOf(this.place.getId()));
 
 		this.add(new Link(uri));
 
 		this.add(new Link("qualify", UriBuilder.fromUri(uri).segment("qualify")
 				.toTemplate(), Method.POST));
 
-		this.add(new Link("qualifications",
-				QualificationsResource.resolveTemplate(Collections
-						.singletonMap("id", place.getId())), Method.GET));
+		this.add(new Link("qualifications", QualificationsResource.TEMPLATE_URI
+				.replace("{id}", String.valueOf(place.getId()))));
 
-		this.add(new Link("recommended hashtags", HashtagsResource
-				.resolveTemplate(Collections.singletonMap("id",
-						place.getId())), Method.GET));
-	}
+		this.add(new Link("recommended hashtags", HashtagsResource.TEMPLATE_URI
+				.replace("{id}", String.valueOf(place.getId()))));
 
-	public Serializable getReference() {
-		return place.getReference();
 	}
 
 	public Serializable getId() {
@@ -47,21 +48,15 @@ public class PlaceResource extends Resource {
 		return place.getName();
 	}
 
-	public Long getTotalThumbsUp() {
-		return place.getTotalThumbsUp();
+	public Serializable getReference() {
+		return place.getReference();
 	}
 
 	public Long getTotalThumbsDown() {
 		return place.getTotalThumbsDown();
 	}
-	
-	public static String resolveTemplate(Map<?, ?> parameters) {
-		String template = TEMPLATE_URI;
-		if (parameters != null) {
-			if (parameters.containsKey("id")) {
-				template = template.replace("{id}", String.valueOf(parameters.get("id")));
-			}
-		}
-		return UriBuilder.fromUri(template).toTemplate();
+
+	public Long getTotalThumbsUp() {
+		return place.getTotalThumbsUp();
 	}
 }

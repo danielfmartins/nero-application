@@ -1,9 +1,9 @@
 package com.neroapp.services.resource;
 
+import java.net.URI;
 import java.util.List;
-import java.util.Map;
 
-import javax.ws.rs.core.UriBuilder;
+import javax.ws.rs.core.UriInfo;
 
 import com.neroapp.entities.Qualification;
 
@@ -12,23 +12,20 @@ public class QualificationsResource extends
 
 	public static final String TEMPLATE_URI = "/places/{id}/qualifications";
 
-	public QualificationsResource(List<Qualification> values, Map<String, Object> parameters) {
+	public QualificationsResource(List<Qualification> values) {
 		super(values);
-		String uri = resolveTemplate(parameters);
+	}
+	
+	/**
+	 * @see com.neroapp.services.resource.ResourceList#buildResourceLinks(javax.ws.rs.core.UriInfo)
+	 */
+	@Override
+	protected void buildResourceLinks(UriInfo uriInfo) {
+		URI uri = this.buildURI(TEMPLATE_URI, uriInfo);
 		add(new Link(uri.toString()));
 	}
 
 	public List<QualificationResource> getQualifications() {
 		return resourceList();
-	}
-	
-	public static String resolveTemplate(Map<?, ?> parameters) {
-		String template = TEMPLATE_URI;
-		if (parameters != null) {
-			if (parameters.containsKey("id")) {
-				template = template.replace("{id}", String.valueOf(parameters.get("id")));
-			}
-		}
-		return UriBuilder.fromUri(template).toTemplate();
 	}
 }

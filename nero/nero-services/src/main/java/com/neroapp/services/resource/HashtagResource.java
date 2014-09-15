@@ -1,5 +1,7 @@
 package com.neroapp.services.resource;
 
+import javax.ws.rs.core.UriInfo;
+
 import com.neroapp.entities.Hashtag;
 
 public class HashtagResource extends Resource {
@@ -21,5 +23,14 @@ public class HashtagResource extends Resource {
 
 	public Long getTotalUse() {
 		return hashtag.getTotalUse();
+	}
+
+	/**
+	 * @see com.neroapp.services.resource.Resource#buildLinks(javax.ws.rs.core.UriInfo)
+	 */
+	@Override
+	public void buildLinks(UriInfo uriInfo) {
+		// Implementado para não fazer nada, pois não há links para este
+		// recurso.		
 	}
 }

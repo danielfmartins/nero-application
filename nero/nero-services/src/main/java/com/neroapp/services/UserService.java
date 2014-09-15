@@ -14,6 +14,7 @@ import com.neroapp.entities.User;
 import com.neroapp.facade.NeroFacade;
 import com.neroapp.services.resource.AuthenticationTokenResource;
 import com.neroapp.services.resource.MessageResource;
+import com.neroapp.services.resource.ResourceBuilder;
 import com.neroapp.services.resource.UserResource;
 
 @Path(UserResource.URI)
@@ -28,8 +29,7 @@ public class UserService extends AbstractService {
 			@FormParam("password") String password,
 			@FormParam("language") String language) {
 		try {
-			return new UserResource(this.facade.registerNewUser(username,
-					language));
+			return ResourceBuilder.build(UserResource.class, this.facade.registerNewUser(username,language));
 		} catch (NeroException e) {
 			throw new RuntimeException(e);
 		}

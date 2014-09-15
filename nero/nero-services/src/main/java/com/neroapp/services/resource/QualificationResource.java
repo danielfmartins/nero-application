@@ -2,19 +2,21 @@ package com.neroapp.services.resource;
 
 import java.util.List;
 
+import javax.ws.rs.core.UriInfo;
+
 import com.neroapp.entities.Instant;
 import com.neroapp.entities.Qualification;
 import com.neroapp.entities.User;
 
 public class QualificationResource extends Resource {
-	
+
 	private Qualification qualification;
-	
+
 	public QualificationResource() {
 		super();
 		this.qualification = new Qualification();
 	}
-	
+
 	public QualificationResource(Qualification qualification) {
 		super();
 		this.qualification = qualification;
@@ -27,7 +29,7 @@ public class QualificationResource extends Resource {
 		}
 		return null;
 	}
-	
+
 	public void setUsername(String username) {
 		this.qualification.setUser(new User(username));
 	}
@@ -39,7 +41,7 @@ public class QualificationResource extends Resource {
 		}
 		return null;
 	}
-	
+
 	public void setInstant(String source) {
 		this.qualification.setInstant(new Instant(source));
 	}
@@ -47,7 +49,7 @@ public class QualificationResource extends Resource {
 	public String getComment() {
 		return this.qualification.getComment();
 	}
-	
+
 	public void setComment(String comment) {
 		this.qualification.setComment(comment);
 	}
@@ -55,7 +57,7 @@ public class QualificationResource extends Resource {
 	public boolean isPositive() {
 		return this.qualification.isPositive();
 	}
-	
+
 	public void setPositive(boolean positive) {
 		this.qualification.setPositiveQualification(Boolean.valueOf(positive));
 	}
@@ -63,12 +65,21 @@ public class QualificationResource extends Resource {
 	public List<String> getHashtags() {
 		return this.qualification.getHashtagsValues();
 	}
-	
+
 	public void setHashtags(List<String> hashtags) {
 		this.qualification.setHashtagsValues(hashtags);
 	}
-	
+
 	public Qualification unwrap() {
 		return this.qualification;
+	}
+
+	/**
+	 * @see com.neroapp.services.resource.Resource#buildLinks(javax.ws.rs.core.UriInfo)
+	 */
+	@Override
+	public void buildLinks(UriInfo uriInfo) {
+		// Implementado para não fazer nada, pois não há links para este
+		// recurso.
 	}
 }
