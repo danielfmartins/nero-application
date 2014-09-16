@@ -6,6 +6,8 @@ import java.util.List;
 import javax.ws.rs.core.UriInfo;
 
 import com.neroapp.entities.Hashtag;
+import com.neroapp.services.uri.NeroUriBuilder;
+import com.neroapp.services.uri.UriParameters;
 
 public class HashtagsResource extends ResourceList<HashtagResource, Hashtag> {
 
@@ -17,7 +19,9 @@ public class HashtagsResource extends ResourceList<HashtagResource, Hashtag> {
 
 	@Override
 	protected void buildResourceLinks(UriInfo uriInfo) {
-		URI uri = this.buildURI(TEMPLATE_URI, uriInfo);
+		UriParameters uriParameters = UriParameters.builder()
+				.path("id", "qualificationType").query("maxResults").build();
+		URI uri = NeroUriBuilder.build(TEMPLATE_URI, uriInfo, uriParameters);
 		add(new Link(uri.toString()));
 	}
 
