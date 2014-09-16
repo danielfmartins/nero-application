@@ -26,7 +26,7 @@ import com.neroapp.services.resource.QualificationsResource;
 import com.neroapp.services.resource.ResourceBuilder;
 
 @Path(PlaceResource.URI)
-public class PlaceService extends AbstractService {
+public class PlaceService {
 
 	@Context
 	private UriInfo uriInfo;
@@ -45,6 +45,23 @@ public class PlaceService extends AbstractService {
 		} catch (NeroException e) {
 			throw new RuntimeException(e);
 		}
+	}
+
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("{id}/recommendedhashtags")
+	public HashtagsResource getHashtags(@PathParam("id") String id,
+			@MatrixParam("qualificationType") String type,
+			@QueryParam("maxResults") Integer maxResultSize) {
+		try {
+			Qualifiable place = this.facade.getQualifiableById(null, id);
+			return ResourceBuilder.build(HashtagsResource.class, this.facade
+					.getRecommendedHashtagsFor(place, Qualification.Type
+							.valueOf(type).getValue()), this.uriInfo);
+		} catch (NeroException e) {
+			throw new RuntimeException(e);
+		}
+
 	}
 
 	@GET
@@ -73,23 +90,6 @@ public class PlaceService extends AbstractService {
 		} catch (NeroException e) {
 			throw new RuntimeException(e);
 		}
-	}
-
-	@GET
-	@Produces(MediaType.APPLICATION_JSON)
-	@Path("{id}/recommendedhashtags")
-	public HashtagsResource getHashtags(@PathParam("id") String id,
-			@MatrixParam("qualificationType") String type,
-			@QueryParam("maxResults") Integer maxResultSize) {
-		try {
-			Qualifiable place = this.facade.getQualifiableById(null, id);
-			return ResourceBuilder.build(HashtagsResource.class, this.facade
-					.getRecommendedHashtagsFor(place, Qualification.Type
-							.valueOf(type).getValue()), this.uriInfo);
-		} catch (NeroException e) {
-			throw new RuntimeException(e);
-		}
-
 	}
 
 	@POST

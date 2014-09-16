@@ -18,7 +18,7 @@ import com.neroapp.services.resource.ResourceBuilder;
 import com.neroapp.services.resource.UserResource;
 
 @Path(UserResource.URI)
-public class UserService extends AbstractService {
+public class UserService {
 
 	@Inject
 	private NeroFacade facade;
