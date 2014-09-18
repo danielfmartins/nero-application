@@ -12,8 +12,18 @@
 	<dependencies>
 		<dependency>
 			<groupId>br.com.crosscut</groupId>
-			<artifactId>nero-business</artifactId>
+			<artifactId>nero-service-common</artifactId>
 			<version>${project.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.glassfish.jersey.core</groupId>
+			<artifactId>jersey-client</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.glassfish.jersey.media</groupId>
+			<artifactId>jersey-media-json-jackson</artifactId>
 		</dependency>
 
 		<dependency>

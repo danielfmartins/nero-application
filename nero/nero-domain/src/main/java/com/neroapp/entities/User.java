@@ -55,7 +55,7 @@ public class User implements Serializable {
 		return userPreferredCountry;
 	}
 
-	public void setUserPreferredCountry(Locale locale) {
+	public void setUserPreferredLocale(Locale locale) {
 		this.userPreferredCountry = locale.getCountry();
 	}
 	

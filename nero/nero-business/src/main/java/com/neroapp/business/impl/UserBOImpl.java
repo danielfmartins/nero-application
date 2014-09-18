@@ -28,7 +28,7 @@ public class UserBOImpl extends AbstractBO<User> implements UserBO {
 
 	public User saveOrUpdate(User user) throws BOException {
 		if (user.getUserPreferredCountry() == null) {
-			user.setUserPreferredCountry(Locale.getDefault());
+			user.setUserPreferredLocale(Locale.getDefault());
 		}
 		if (user.getUsername() == null) {
 			throw new BOException("User without name.");
