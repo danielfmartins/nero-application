@@ -17,6 +17,7 @@ import org.glassfish.jersey.jackson.JacksonFeature;
 
 import com.neroapp.common.NeroException;
 import com.neroapp.console.services.resource.PlacesResource;
+import com.neroapp.console.services.resource.QualificationsResource;
 import com.neroapp.console.services.resource.UserResource;
 import com.neroapp.entities.Hashtag;
 import com.neroapp.entities.Qualifiable;
@@ -63,8 +64,12 @@ public class NeroServices implements NeroFacade {
 	@Override
 	public List<Qualification> getAllQualifications(Qualifiable qualifiable)
 			throws NeroException {
-		// TODO Auto-generated method stub
-		return null;
+		List<Qualification> qualifications = ClientBuilder.newClient()
+				.target(PLACES_URI).path(String.valueOf(qualifiable.getId()))
+				.path("qualifications")
+				.request(MediaType.APPLICATION_JSON_TYPE)
+				.get(QualificationsResource.class).unwrap();
+		return qualifications;
 	}
 
 	@Override
@@ -92,7 +97,7 @@ public class NeroServices implements NeroFacade {
 	@Override
 	public List<Hashtag> getRecommendedHashtagsFor(Qualifiable qualifiable,
 			Boolean isPositiveQualification) throws NeroException {
-		// TODO Auto-generated method stub
+		//TODO request for recommendedHashtags
 		return null;
 	}
 
