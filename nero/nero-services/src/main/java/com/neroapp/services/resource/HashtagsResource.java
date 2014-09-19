@@ -12,6 +12,10 @@ import com.neroapp.services.uri.UriParameters;
 public class HashtagsResource extends ResourceList<HashtagResource, Hashtag> {
 
 	public static final String TEMPLATE_URI = "/places/{id}/recommendedhashtags;qualificationType={qualificationType}{?maxResults}";
+	
+	public HashtagsResource() {
+		super(null);
+	}
 
 	public HashtagsResource(List<Hashtag> values) {
 		super(values);

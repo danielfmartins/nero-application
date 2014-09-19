@@ -32,12 +32,15 @@ public class UserService {
 
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
-	public UserResource create(@FormParam("username") String username,
+	public Response create(@FormParam("username") String username,
 			@FormParam("password") String password,
 			@FormParam("language") String language) {
 		try {
-			return ResourceBuilder.build(UserResource.class,
-					this.facade.registerNewUser(username, language), this.uriInfo);
+			return Response
+					.status(Status.CREATED)
+					.entity(ResourceBuilder.build(UserResource.class,
+							this.facade.registerNewUser(username, language),
+							this.uriInfo)).build();
 		} catch (NeroException e) {
 			throw new RuntimeException(e);
 		}
@@ -48,8 +51,6 @@ public class UserService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response get(@PathParam("username") String username) {
 		try {
-			// TODO usuário não encontrado??? Deve ser lançada uma exceção com
-			// status http 404
 			User user = this.facade.findUserByName(username);
 			if (user == null) {
 				return Response

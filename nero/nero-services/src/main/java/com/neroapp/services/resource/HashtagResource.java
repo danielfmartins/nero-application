@@ -7,6 +7,11 @@ import com.neroapp.entities.Hashtag;
 public class HashtagResource extends Resource {
 
 	private Hashtag hashtag;
+	
+	public HashtagResource() {
+		super();
+		this.hashtag = new Hashtag();
+	}
 
 	public HashtagResource(Hashtag hashtag) {
 		super();

@@ -14,6 +14,11 @@ public class PlaceResource extends Resource {
 
 	private Place place;
 
+	public PlaceResource() {
+		super();
+		this.place = new Place();
+	}
+	
 	public PlaceResource(Place place) {
 		super();
 		this.place = place;
@@ -24,19 +29,21 @@ public class PlaceResource extends Resource {
 	 */
 	@Override
 	public void buildLinks(UriInfo uriInfo) {
-		String uri = TEMPLATE_URI.replace("{id}",
-				String.valueOf(this.place.getId()));
-
-		this.add(new Link(uri));
-
-		this.add(new Link("qualify", UriBuilder.fromUri(uri).segment("qualify")
-				.toTemplate(), Method.POST));
-
-		this.add(new Link("qualifications", QualificationsResource.TEMPLATE_URI
-				.replace("{id}", String.valueOf(place.getId()))));
-
-		this.add(new Link("recommended hashtags", HashtagsResource.TEMPLATE_URI
-				.replace("{id}", String.valueOf(place.getId()))));
+		if (this.place.getId() != null) {
+			String uri = TEMPLATE_URI.replace("{id}",
+					String.valueOf(this.place.getId()));
+			
+			this.add(new Link(uri));
+			
+			this.add(new Link("qualify", UriBuilder.fromUri(uri).segment("qualify")
+					.toTemplate(), Method.POST));
+			
+			this.add(new Link("qualifications", QualificationsResource.TEMPLATE_URI
+					.replace("{id}", String.valueOf(place.getId()))));
+			
+			this.add(new Link("recommended hashtags", HashtagsResource.TEMPLATE_URI
+					.replace("{id}", String.valueOf(place.getId()))));
+		}
 
 	}
 

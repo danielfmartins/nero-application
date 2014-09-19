@@ -12,11 +12,15 @@ import javax.ws.rs.core.Form;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
+import javax.ws.rs.core.Response.Status.Family;
 
 import org.glassfish.jersey.jackson.JacksonFeature;
 
 import com.neroapp.common.NeroException;
+import com.neroapp.console.services.resource.HashtagsResource;
+import com.neroapp.console.services.resource.MessageResource;
 import com.neroapp.console.services.resource.PlacesResource;
+import com.neroapp.console.services.resource.QualificationResource;
 import com.neroapp.console.services.resource.QualificationsResource;
 import com.neroapp.console.services.resource.UserResource;
 import com.neroapp.entities.Hashtag;
@@ -55,6 +59,13 @@ public class NeroServices implements NeroFacade {
 			if (Status.NOT_FOUND.getStatusCode() == response.getStatus()) {
 				return null;
 			}
+
+			if (Status.Family.SUCCESSFUL != Status.Family.familyOf(response
+					.getStatus())) {
+				throw new NeroException(response.hasEntity() ? response
+						.readEntity(MessageResource.class).toString()
+						: response.toString());
+			}
 			return response.readEntity(UserResource.class).unwrap();
 		} catch (Exception e) {
 			throw new NeroException(e);
@@ -64,11 +75,17 @@ public class NeroServices implements NeroFacade {
 	@Override
 	public List<Qualification> getAllQualifications(Qualifiable qualifiable)
 			throws NeroException {
-		List<Qualification> qualifications = ClientBuilder.newClient()
-				.target(PLACES_URI).path(String.valueOf(qualifiable.getId()))
+		Response response = ClientBuilder.newClient().target(PLACES_URI)
+				.path(String.valueOf(qualifiable.getId()))
 				.path("qualifications")
-				.request(MediaType.APPLICATION_JSON_TYPE)
-				.get(QualificationsResource.class).unwrap();
+				.request(MediaType.APPLICATION_JSON_TYPE).get();
+		if (Status.Family.SUCCESSFUL != Status.Family.familyOf(response
+				.getStatus())) {
+			throw new NeroException(response.hasEntity() ? response.readEntity(
+					MessageResource.class).toString() : response.toString());
+		}
+		List<Qualification> qualifications = response.readEntity(
+				QualificationsResource.class).unwrap();
 		return qualifications;
 	}
 
@@ -84,21 +101,42 @@ public class NeroServices implements NeroFacade {
 	public List<Place> getQualifiables(Serializable referenceForQualifiables,
 			String qualifiableName, Integer resultSetSizeLimit)
 			throws NeroException {
-		List<Place> places = ClientBuilder.newClient()
+		Response response = ClientBuilder.newClient()
 				.register(JacksonFeature.class).target(PLACES_URI)
 				.matrixParam("reference", referenceForQualifiables)
 				.matrixParam("name", qualifiableName)
 				.queryParam("maxResults", resultSetSizeLimit)
-				.request(MediaType.APPLICATION_JSON_TYPE)
-				.get(PlacesResource.class).unwrap();
+				.request(MediaType.APPLICATION_JSON_TYPE).get();
+		if (Status.Family.SUCCESSFUL != Status.Family.familyOf(response
+				.getStatus())) {
+			throw new NeroException(response.hasEntity() ? response.readEntity(
+					MessageResource.class).toString() : response.toString());
+		}
+		List<Place> places = response.readEntity(PlacesResource.class).unwrap();
 		return places;
 	}
 
 	@Override
 	public List<Hashtag> getRecommendedHashtagsFor(Qualifiable qualifiable,
 			Boolean isPositiveQualification) throws NeroException {
-		//TODO request for recommendedHashtags
-		return null;
+		Response response = ClientBuilder
+				.newClient()
+				.register(JacksonFeature.class)
+				.target(PLACES_URI)
+				.path(String.valueOf(qualifiable.getId()))
+				.path("recommendedhashtags")
+				.matrixParam("qualificationType",
+						isPositiveQualification ? "POSITIVE" : "NEGATIVE")
+				.request(MediaType.APPLICATION_JSON_TYPE).get();
+
+		if (Status.Family.SUCCESSFUL != Status.Family.familyOf(response
+				.getStatus())) {
+			throw new NeroException(response.hasEntity() ? response.readEntity(
+					MessageResource.class).toString() : response.toString());
+		}
+		List<Hashtag> hashtags = response.readEntity(HashtagsResource.class)
+				.unwrap();
+		return hashtags;
 	}
 
 	@Override
@@ -141,8 +179,23 @@ public class NeroServices implements NeroFacade {
 	@Override
 	public void registerQualification(Qualification newQualification)
 			throws NeroException {
-		// TODO Auto-generated method stub
+		String id = String.valueOf(newQualification.getQualifiable().getId());
+		Response response = ClientBuilder
+				.newClient()
+				.register(JacksonFeature.class)
+				.target(PLACES_URI)
+				.path(id)
+				.path("qualify")
+				.request()
+				.post(Entity.entity(
+						new QualificationResource(newQualification),
+						MediaType.APPLICATION_JSON_TYPE));
 
+		Family family = Status.Family.familyOf(response.getStatus());
+		if (Status.Family.SUCCESSFUL != family) {
+			throw new NeroException(response.hasEntity() ? response.readEntity(
+					MessageResource.class).toString() : response.toString());
+		}
 	}
 
 	@Override

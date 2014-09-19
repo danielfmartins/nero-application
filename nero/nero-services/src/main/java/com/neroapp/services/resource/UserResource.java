@@ -1,12 +1,8 @@
 package com.neroapp.services.resource;
 
-import java.net.URI;
-
 import javax.ws.rs.core.UriInfo;
 
 import com.neroapp.entities.User;
-import com.neroapp.services.uri.NeroUriBuilder;
-import com.neroapp.services.uri.UriParameters;
 
 public class UserResource extends Resource {
 
@@ -34,9 +30,8 @@ public class UserResource extends Resource {
 	 */
 	@Override
 	public void buildLinks(UriInfo uriInfo) {
-		UriParameters uriParameters = UriParameters.builder().path("username")
-				.build();
-		URI uri = NeroUriBuilder.build(TEMPLATE_URI, uriInfo, uriParameters);
-		this.add(new Link(uri.toString()));
+		String uri = TEMPLATE_URI.replace("{username}",
+				String.valueOf(this.user.getUsername()));
+		this.add(new Link(uri));
 	}
 }
