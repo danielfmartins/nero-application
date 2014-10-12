@@ -13,13 +13,16 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriInfo;
 
-import com.neroapp.common.NeroException;
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotEmpty;
+
+import com.neroapp.common.exceptions.NeroException;
+import com.neroapp.common.exceptions.NotFoundExpcetion;
 import com.neroapp.entities.User;
 import com.neroapp.facade.NeroFacade;
-import com.neroapp.services.resource.AuthenticationTokenResource;
-import com.neroapp.services.resource.MessageResource;
-import com.neroapp.services.resource.ResourceBuilder;
-import com.neroapp.services.resource.UserResource;
+import com.neroapp.resources.AuthenticationTokenResource;
+import com.neroapp.resources.ResourceBuilderManager;
+import com.neroapp.resources.UserResource;
 
 @Path(UserResource.URI)
 public class UserService {
@@ -30,15 +33,20 @@ public class UserService {
 	@Inject
 	private NeroFacade facade;
 
+	@Inject
+	private ResourceBuilderManager resourceBuilderManager;
+
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response create(@FormParam("username") String username,
-			@FormParam("password") String password,
-			@FormParam("language") String language) {
+	public Response create(
+			@NotEmpty(message = "{parameter.required.username}") @FormParam("username") String username,
+			@NotEmpty(message = "{parameter.required.password}") @FormParam("password") String password,
+			@Length(min = 2, message = "{parameter.invalid.language}") @FormParam("language") String language) {
 		try {
 			return Response
 					.status(Status.CREATED)
-					.entity(ResourceBuilder.build(UserResource.class,
+					.entity(this.resourceBuilderManager.build(
+							UserResource.class,
 							this.facade.registerNewUser(username, language),
 							this.uriInfo)).build();
 		} catch (NeroException e) {
@@ -49,38 +57,34 @@ public class UserService {
 	@GET
 	@Path("{username}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response get(@PathParam("username") String username) {
+	public UserResource get(@PathParam("username") String username) {
 		try {
-			User user = this.facade.findUserByName(username);
-			if (user == null) {
-				return Response
-						.status(Status.NOT_FOUND)
-						.entity(new MessageResource(String.format(
-								"User %s not found.", username))).build();
-			}
-			return Response.ok(
-					ResourceBuilder.build(UserResource.class, user,
-							this.uriInfo)).build();
+			User user = this.getUser(username);
+			return this.resourceBuilderManager.build(UserResource.class, user,
+					this.uriInfo);
 		} catch (NeroException e) {
 			throw new RuntimeException(e);
 		}
 	}
 
+	private User getUser(String username) throws NeroException {
+		User user = this.facade.findUserByName(username);
+		if (user == null) {
+			throw new NotFoundExpcetion(String.format("User %s not found.",
+					username));
+		}
+		return user;
+	}
+
 	@POST
 	@Path("authentication")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response login(@FormParam("username") String username,
-			@FormParam("password") String password) {
+	public AuthenticationTokenResource login(
+			@NotEmpty(message = "{parameter.required.username}") @FormParam("username") String username,
+			@NotEmpty(message = "{parameter.required.password}") @FormParam("password") String password) {
 		try {
-			User user = this.facade.findUserByName(username);
-			if (user == null) {
-				return Response
-						.status(Status.UNAUTHORIZED)
-						.entity(new MessageResource(
-								"Usuário e ou senha inválidos.")).build();
-			}
-			return Response.ok(new AuthenticationTokenResource(username))
-					.build();
+			User user = this.getUser(username);
+			return new AuthenticationTokenResource(user.getUsername());
 		} catch (NeroException e) {
 			throw new RuntimeException(e);
 		}

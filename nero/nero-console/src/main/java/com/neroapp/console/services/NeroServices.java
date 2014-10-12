@@ -16,13 +16,7 @@ import javax.ws.rs.core.Response.Status.Family;
 
 import org.glassfish.jersey.jackson.JacksonFeature;
 
-import com.neroapp.common.NeroException;
-import com.neroapp.console.services.resource.HashtagsResource;
-import com.neroapp.console.services.resource.MessageResource;
-import com.neroapp.console.services.resource.PlacesResource;
-import com.neroapp.console.services.resource.QualificationResource;
-import com.neroapp.console.services.resource.QualificationsResource;
-import com.neroapp.console.services.resource.UserResource;
+import com.neroapp.common.exceptions.NeroException;
 import com.neroapp.entities.Hashtag;
 import com.neroapp.entities.Qualifiable;
 import com.neroapp.entities.Qualification;
@@ -30,6 +24,12 @@ import com.neroapp.entities.User;
 import com.neroapp.entities.authentication.AuthenticationType;
 import com.neroapp.entities.places.Place;
 import com.neroapp.facade.NeroFacade;
+import com.neroapp.resources.HashtagsResource;
+import com.neroapp.resources.MessageResource;
+import com.neroapp.resources.PlacesResource;
+import com.neroapp.resources.QualificationResource;
+import com.neroapp.resources.QualificationsResource;
+import com.neroapp.resources.UserResource;
 
 @Dependent
 @Named("neroServices")

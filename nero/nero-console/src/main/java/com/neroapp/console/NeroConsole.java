@@ -6,7 +6,7 @@ import java.util.Locale;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
-import com.neroapp.common.NeroException;
+import com.neroapp.common.exceptions.NeroException;
 import com.neroapp.console.command.NeroCommand;
 import com.neroapp.console.command.NeroCommandChain;
 import com.neroapp.entities.User;

@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 
-import com.neroapp.common.NeroException;
+import com.neroapp.common.exceptions.NeroException;
 import com.neroapp.entities.Hashtag;
 import com.neroapp.entities.Qualifiable;
 import com.neroapp.entities.Qualification;

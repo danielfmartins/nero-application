@@ -29,7 +29,7 @@ class DB4oConnectionFactory implements Serializable {
 		if (this.objectServer == null) {
 			ServerConfiguration serverConfig = Db4oClientServer
 					.newServerConfiguration();
-			serverConfig.common().messageLevel(3);
+			serverConfig.common().messageLevel(1);
 			this.objectServer = Db4oClientServer.openServer(serverConfig,
 					DATABASE_FILE_PATH, PORT);
 			this.objectServer.grantAccess(USER, PASSWORD);

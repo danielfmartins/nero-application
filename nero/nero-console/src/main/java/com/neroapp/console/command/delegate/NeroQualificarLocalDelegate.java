@@ -7,7 +7,7 @@ import java.util.Locale;
 import java.util.Set;
 import java.util.StringTokenizer;
 
-import com.neroapp.common.NeroException;
+import com.neroapp.common.exceptions.NeroException;
 import com.neroapp.console.Console;
 import com.neroapp.console.NeroConsole;
 import com.neroapp.entities.Hashtag;

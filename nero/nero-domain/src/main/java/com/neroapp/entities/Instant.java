@@ -10,13 +10,9 @@ import java.util.TimeZone;
 
 public class Instant implements Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
-	private static final DateFormat SIMPLE_DATETIME_FORMAT = SimpleDateFormat
-			.getDateTimeInstance();
+	private static final DateFormat SIMPLE_DATETIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
 	private Long timestamp;
 	private Date date;
 	private TimeZone timezone;
@@ -98,18 +94,32 @@ public class Instant implements Serializable {
 	}
 
 	@Override
-	public boolean equals(Object otherObject) {
-		if (otherObject == null)
-			return false;
-		if (!(otherObject instanceof Instant))
-			return false;
-		Instant otherInstant = (Instant) otherObject;
-		if (!this.timezone.equals(otherInstant.timezone))
-			return false;
-		else if (!this.timestamp.equals(otherInstant.timezone))
-			return false;
-		else
+	public boolean equals(Object obj) {
+		if (this == obj) {
 			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (!(obj instanceof Instant)) {
+			return false;
+		}
+		Instant other = (Instant) obj;
+		if (this.timestamp == null) {
+			if (other.timestamp != null) {
+				return false;
+			}
+		} else if (!this.timestamp.equals(other.timestamp)) {
+			return false;
+		}
+		if (this.timezone == null) {
+			if (other.timezone != null) {
+				return false;
+			}
+		} else if (!this.timezone.equals(other.timezone)) {
+			return false;
+		}
+		return true;
 	}
 
 	@Override

@@ -12,7 +12,7 @@ import com.neroapp.business.api.BO;
 import com.neroapp.business.api.QualificationBO;
 import com.neroapp.business.exception.BOException;
 import com.neroapp.business.impl.BOFactory;
-import com.neroapp.common.NeroException;
+import com.neroapp.common.exceptions.NeroException;
 import com.neroapp.entities.Hashtag;
 import com.neroapp.entities.Qualifiable;
 import com.neroapp.entities.places.Place;

@@ -9,7 +9,7 @@ import com.neroapp.business.api.QualificationBO;
 import com.neroapp.business.api.UserBO;
 import com.neroapp.business.exception.BOException;
 import com.neroapp.business.impl.BOFactory;
-import com.neroapp.common.NeroException;
+import com.neroapp.common.exceptions.NeroException;
 import com.neroapp.entities.FavoriteQualifiable;
 import com.neroapp.entities.Hashtag;
 import com.neroapp.entities.Qualifiable;
