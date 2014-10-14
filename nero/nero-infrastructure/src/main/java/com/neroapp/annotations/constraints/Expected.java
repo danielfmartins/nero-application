@@ -1,4 +1,4 @@
-package com.neroapp.services.validation.constraints;
+package com.neroapp.annotations.constraints;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -8,7 +8,7 @@ import java.lang.annotation.Target;
 import javax.validation.Constraint;
 import javax.validation.Payload;
 
-import com.neroapp.services.validation.ExpectedValuesValidator;
+import com.neroapp.constraint.validators.ExpectedValuesValidator;
 
 @Target({ ElementType.PARAMETER })
 @Retention(RetentionPolicy.RUNTIME)

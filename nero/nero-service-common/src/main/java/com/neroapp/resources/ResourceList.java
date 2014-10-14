@@ -8,11 +8,9 @@ import java.util.List;
 public abstract class ResourceList<T, R extends Resource<T>> extends Resource<List<T>> {
 
 	private List<R> resourceList;
-	private List<T> values;
 
 	protected ResourceList(List<T> values) {
 		super();
-		this.values = values;
 		this.resourceList = new ArrayList<R>();
 		this.addAll(values);
 	}
@@ -42,6 +40,10 @@ public abstract class ResourceList<T, R extends Resource<T>> extends Resource<Li
 	
 	@Override
 	public List<T> unwrap() {
-		return this.values;
+		List<T> values = new ArrayList<>();
+		for (R resource : this.resourceList) {
+			values.add(resource.unwrap());
+		}
+		return values;
 	}
 }

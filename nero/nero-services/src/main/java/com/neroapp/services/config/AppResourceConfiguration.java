@@ -6,8 +6,6 @@ import org.glassfish.jersey.jackson.JacksonFeature;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.server.ServerProperties;
 
-import com.neroapp.services.validation.ValidationConfigurationContextResolver;
-
 @ApplicationPath("/*")
 public class AppResourceConfiguration extends ResourceConfig {
 

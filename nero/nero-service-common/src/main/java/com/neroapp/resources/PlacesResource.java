@@ -8,6 +8,10 @@ public class PlacesResource extends ResourceList<Place, PlaceResource> {
 	
 	public static final String TEMPLATE_URI = "/places;reference={reference}{;name}{?maxResults}";
 
+	public PlacesResource() {
+		super(null);
+	}
+	
 	public PlacesResource(List<Place> values) {
 		super(values);
 	}

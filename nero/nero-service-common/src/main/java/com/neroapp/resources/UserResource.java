@@ -7,8 +7,13 @@ public class UserResource extends Resource<User> {
 	public static final String URI = "/users";
 	public static final String AUTHENTICATION_URI = "/users/authentication";
 	public static final String TEMPLATE_URI = "/users/{username}";
-	
+
 	private User user;
+
+	public UserResource() {
+		super();
+		this.user = new User();
+	}
 
 	public UserResource(User user) {
 		super();
@@ -19,8 +24,16 @@ public class UserResource extends Resource<User> {
 		return user.getUsername();
 	}
 
+	public void setUsername(String username) {
+		this.user.setUsername(username);
+	}
+
 	public String getUserPreferredCountry() {
 		return user.getUserPreferredCountry();
+	}
+
+	public void setUserPreferredCountry(String language) {
+		this.user.setUserPreferredCountry(language);
 	}
 
 	@Override

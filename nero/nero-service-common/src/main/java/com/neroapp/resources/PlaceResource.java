@@ -41,7 +41,7 @@ public class PlaceResource extends Resource<Place> {
 		return place.getTotalThumbsUp();
 	}
 
-	public void setId(Serializable id) {
+	public void setId(String id) {
 		this.place.setId(id);
 	}
 
@@ -49,7 +49,7 @@ public class PlaceResource extends Resource<Place> {
 		this.place.setName(name);
 	}
 
-	public void setReference(Serializable reference) {
+	public void setReference(String reference) {
 		this.place.setReference(reference);
 	}
 

@@ -21,6 +21,12 @@
 			<artifactId>nero-service-common</artifactId>
 			<version>${project.version}</version>
 		</dependency>
+
+		<dependency>
+			<groupId>br.com.crosscut</groupId>
+			<artifactId>nero-infrastructure</artifactId>
+			<version>${project.version}</version>
+		</dependency>
 		
 		<dependency>
 			<groupId>javax.transaction</groupId>

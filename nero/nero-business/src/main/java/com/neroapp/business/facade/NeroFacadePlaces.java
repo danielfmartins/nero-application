@@ -33,11 +33,6 @@ import fi.foyt.foursquare.api.entities.VenuesSearchResult;
 @RequestScoped
 public class NeroFacadePlaces extends NeroFacadeImpl {
 
-	//TODO essas constantes precisa ser definidas em configurações (maven profile)
-	public static final String CLIENT_ID = "Q02XOV5HVJPODONU3MVAMOF4RAXXNBFGSMK2SS0YB5GOC2QC";
-	public static final String CLIENT_SECRET = "YOPN1WNLO5VXH23JVUP3BKGYBHNWPF0NCRJPDAUHVTUPSBCT";
-	public static final String CALLBACK_URL = "http://localhost:8080/fmtestapp/foursquare/callback";
-
 	@Inject
 	protected FoursquareApi foursquareApi;
 

@@ -20,6 +20,7 @@ import javax.ws.rs.core.UriInfo;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
+import com.neroapp.annotations.constraints.Expected;
 import com.neroapp.common.exceptions.BadRequestException;
 import com.neroapp.common.exceptions.NeroException;
 import com.neroapp.common.exceptions.NotFoundExpcetion;
@@ -34,7 +35,6 @@ import com.neroapp.resources.PlacesResource;
 import com.neroapp.resources.QualificationResource;
 import com.neroapp.resources.QualificationsResource;
 import com.neroapp.resources.ResourceBuilderManager;
-import com.neroapp.services.validation.constraints.Expected;
 
 @Path(PlaceResource.URI)
 public class PlaceService {

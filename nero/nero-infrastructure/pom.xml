@@ -6,14 +6,18 @@
 		<artifactId>nero</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-	<artifactId>nero-service-common</artifactId>
-	<name>Nero Service Common Module</name>
+	<artifactId>nero-infrastructure</artifactId>
+	<name>Nero Infrastructure</name>
 
 	<dependencies>
 		<dependency>
-			<groupId>br.com.crosscut</groupId>
-			<artifactId>nero-domain</artifactId>
-			<version>${project.version}</version>
+			<groupId>javax.enterprise</groupId>
+			<artifactId>cdi-api</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>javax.validation</groupId>
+			<artifactId>validation-api</artifactId>
 		</dependency>
 	</dependencies>
 </project>

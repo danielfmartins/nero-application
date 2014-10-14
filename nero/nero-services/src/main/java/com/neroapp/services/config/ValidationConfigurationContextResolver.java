@@ -1,4 +1,4 @@
-package com.neroapp.services.validation;
+package com.neroapp.services.config;
 
 import java.util.Arrays;
 

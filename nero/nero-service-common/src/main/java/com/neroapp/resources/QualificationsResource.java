@@ -9,6 +9,10 @@ public class QualificationsResource extends
 	
 	public static final String TEMPLATE_URI = "/places/{id}/qualifications";
 
+	public QualificationsResource() {
+		super(null);
+	}
+	
 	public QualificationsResource(List<Qualification> values) {
 		super(values);
 	}

@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 import javax.inject.Named;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
@@ -16,6 +17,7 @@ import javax.ws.rs.core.Response.Status.Family;
 
 import org.glassfish.jersey.jackson.JacksonFeature;
 
+import com.neroapp.annotations.Value;
 import com.neroapp.common.exceptions.NeroException;
 import com.neroapp.entities.Hashtag;
 import com.neroapp.entities.Qualifiable;
@@ -35,8 +37,13 @@ import com.neroapp.resources.UserResource;
 @Named("neroServices")
 public class NeroServices implements NeroFacade {
 
-	public static final String USERS_URI = "http://localhost:8080/nero-services/users";
-	public static final String PLACES_URI = "http://localhost:8080/nero-services/places";
+	@Inject
+	@Value("endpoint.users.url")
+	private String endpointUsersUrl;
+	
+	@Inject
+	@Value("endpoint.places.url")
+	private String endpointPlacesUrl;
 
 	@Override
 	public User checkExistingUser(String username,
@@ -53,7 +60,7 @@ public class NeroServices implements NeroFacade {
 	public User findUserByName(String userName) throws NeroException {
 		try {
 			Response response = ClientBuilder.newClient()
-					.register(JacksonFeature.class).target(USERS_URI)
+					.register(JacksonFeature.class).target(this.endpointUsersUrl)
 					.path(userName).request(MediaType.APPLICATION_JSON_TYPE)
 					.get();
 			if (Status.NOT_FOUND.getStatusCode() == response.getStatus()) {
@@ -75,7 +82,7 @@ public class NeroServices implements NeroFacade {
 	@Override
 	public List<Qualification> getAllQualifications(Qualifiable qualifiable)
 			throws NeroException {
-		Response response = ClientBuilder.newClient().target(PLACES_URI)
+		Response response = ClientBuilder.newClient().target(this.endpointPlacesUrl)
 				.path(String.valueOf(qualifiable.getId()))
 				.path("qualifications")
 				.request(MediaType.APPLICATION_JSON_TYPE).get();
@@ -102,7 +109,7 @@ public class NeroServices implements NeroFacade {
 			String qualifiableName, Integer resultSetSizeLimit)
 			throws NeroException {
 		Response response = ClientBuilder.newClient()
-				.register(JacksonFeature.class).target(PLACES_URI)
+				.register(JacksonFeature.class).target(this.endpointPlacesUrl)
 				.matrixParam("reference", referenceForQualifiables)
 				.matrixParam("name", qualifiableName)
 				.queryParam("maxResults", resultSetSizeLimit)
@@ -122,7 +129,7 @@ public class NeroServices implements NeroFacade {
 		Response response = ClientBuilder
 				.newClient()
 				.register(JacksonFeature.class)
-				.target(PLACES_URI)
+				.target(this.endpointPlacesUrl)
 				.path(String.valueOf(qualifiable.getId()))
 				.path("recommendedhashtags")
 				.matrixParam("qualificationType",
@@ -164,7 +171,7 @@ public class NeroServices implements NeroFacade {
 			User user = ClientBuilder
 					.newClient()
 					.register(JacksonFeature.class)
-					.target(USERS_URI)
+					.target(this.endpointUsersUrl)
 					.request(MediaType.APPLICATION_JSON_TYPE)
 					.post(Entity.entity(new Form().param("username", username)
 							.param("language", language),
@@ -183,7 +190,7 @@ public class NeroServices implements NeroFacade {
 		Response response = ClientBuilder
 				.newClient()
 				.register(JacksonFeature.class)
-				.target(PLACES_URI)
+				.target(this.endpointPlacesUrl)
 				.path(id)
 				.path("qualify")
 				.request()

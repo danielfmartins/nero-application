@@ -1,4 +1,4 @@
-package com.neroapp.services.validation;
+package com.neroapp.constraint.validators;
 
 import java.util.Arrays;
 import java.util.List;
@@ -6,7 +6,7 @@ import java.util.List;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
-import com.neroapp.services.validation.constraints.Expected;
+import com.neroapp.annotations.constraints.Expected;
 
 public class ExpectedValuesValidator implements ConstraintValidator<Expected, Object>{
 
